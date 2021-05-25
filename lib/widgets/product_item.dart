@@ -38,8 +38,7 @@ class ProductItem extends StatelessWidget {
           leading: Consumer<Product>(
             //Consumer allows to rebuild only nested child widget (not whole widget)
             builder: (ctx, product, _) => IconButton(
-              icon: Icon(
-                  product.isFavorite ? Icons.favorite : Icons.favorite_border),
+              icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
               onPressed: () {
                 product.toggleFavoriteStatus();
               },

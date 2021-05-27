@@ -89,12 +89,15 @@ class Products with ChangeNotifier {
         description: product.description,
         price: product.price,
         imageUrl: product.imageUrl,
-        id: json.decode(response.body).toString(), //unikalne id nadawane przez firebase
+        id: json.decode(response.body)['name'], //unikalne id nadawane przez firebase
       );
       _items.add(newProduct);
       //_items.insert(0, newProduct); //dodanie na początku listy
 
       notifyListeners();
+    }).catchError((error) {
+      print(error);
+      throw error;
     });
   }
 

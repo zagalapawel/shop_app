@@ -37,7 +37,7 @@ class Products with ChangeNotifier {
       imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     ),
   ];
-  var _showFavoritesOnly = false;
+  // var _showFavoritesOnly = false;
 
   List<Product> get items {
     // if (_showFavoritesOnly) {
@@ -66,23 +66,22 @@ class Products with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  Future<void> addProduct(Product product) {
+  Future<void> addProduct(Product product) async {
     final url = Uri.https('fluttershopapp-a7999-default-rtdb.europe-west1.firebasedatabase.app', '/products.json');
-    return http
-        .post(
-      url,
-      body: json.encode(
-        //json.encode pochodzi z importu dart:convert
-        {
-          'title': product.title,
-          'description': product.description,
-          'imageUrl': product.imageUrl,
-          'price': product.price,
-          'isFavorite': product.isFavorite,
-        },
-      ),
-    )
-        .then((response) {
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode(
+            //json.encode pochodzi z importu dart:convert
+            {
+              'title': product.title,
+              'description': product.description,
+              'imageUrl': product.imageUrl,
+              'price': product.price,
+              'isFavorite': product.isFavorite,
+            }),
+      );
+
       print('JSON body:  ${json.decode(response.body)}');
       final newProduct = Product(
         title: product.title,
@@ -95,10 +94,10 @@ class Products with ChangeNotifier {
       //_items.insert(0, newProduct); //dodanie na początku listy
 
       notifyListeners();
-    }).catchError((error) {
+    } catch (error) {
       print(error);
       throw error;
-    });
+    }
   }
 
   void updateProduct(String id, Product newProduct) {

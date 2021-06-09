@@ -31,7 +31,7 @@ class UserProductItem extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(Icons.delete),
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).accentColor,
               onPressed: () {
                 Provider.of<Products>(context, listen: false).deleteProducts(id);
               },

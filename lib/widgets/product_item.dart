@@ -44,8 +44,10 @@ class ProductItem extends StatelessWidget {
                 try {
                   await product.toggleFavoriteStatus();
                 } catch (error) {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
                   scaffold.showSnackBar(
                     SnackBar(
+                      duration: Duration(seconds: 1),
                       content: Text(
                         'Adding to favorite failed!',
                         textAlign: TextAlign.center,

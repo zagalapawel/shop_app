@@ -24,20 +24,17 @@ class Product with ChangeNotifier {
 
   Future<void> toggleFavoriteStatus() async {
     final url = Uri.https('fluttershopapp-a7999-default-rtdb.europe-west1.firebasedatabase.app', '/products/$id.json');
+    final _oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
     final response = await http.patch(
       url,
       body: jsonEncode({
-        'title': this.title,
-        'description': this.description,
-        'imageUrl': this.imageUrl,
-        'price': this.price,
-        'isFavorite': this.isFavorite,
+        'isFavorite': isFavorite,
       }),
     );
     if (response.statusCode >= 400) {
-      isFavorite = !isFavorite;
+      isFavorite = _oldStatus;
       notifyListeners();
       throw HttpException('Cloud not add to favorite.');
     }

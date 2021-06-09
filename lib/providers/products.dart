@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import './product.dart';
+import '../models/http_exception.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = [
@@ -146,8 +147,19 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProducts(String id) {
-    _items.removeWhere((prod) => prod.id == id);
+  Future<void> deleteProducts(String id) async {
+    final url = Uri.https('fluttershopapp-a7999-default-rtdb.europe-west1.firebasedatabase.app', '/products/$id.json');
+    final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+    var existingProduct = _items[existingProductIndex];
+    //"optimistic update" - usuwamy obiekt z pamięci lokalnej, następnie z firebase -> jeśli usuwanie z firebase się nie uda to dodajemy obiekt do pamięci lokalnej
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+    final response = await http.delete(url);
+    if (response.statusCode >= 400) {
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException('Cloud not delete product.');
+    }
+    existingProduct = null;
   }
 }

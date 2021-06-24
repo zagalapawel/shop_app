@@ -16,7 +16,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   Future _ordersFuture;
 
   Future _obtainOrdersFuture() {
-    //dzieki temu mamy pewnosc ze zadny nowy future nie zostanie stworzony gdy widget jest budowany na nowo
+    //dzieki temu mamy pewnosc ze zaden nowy future nie zostanie stworzony gdy widget jest budowany na nowo
     return Provider.of<Orders>(context, listen: false).fetchAndSetOrders();
   }
 

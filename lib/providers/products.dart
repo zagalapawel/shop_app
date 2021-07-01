@@ -101,7 +101,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final url = Uri.https('fluttershopapp-a7999-default-rtdb.europe-west1.firebasedatabase.app', '/products.json');
+    final url = Uri.https('fluttershopapp-a7999-default-rtdb.europe-west1.firebasedatabase.app', '/products.json', {'auth': '$authToken'});
     try {
       final response = await http.post(
         url,
@@ -135,7 +135,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> updateProduct(String id, Product newProduct) async {
-    final url = Uri.https('fluttershopapp-a7999-default-rtdb.europe-west1.firebasedatabase.app', '/products/$id.json');
+    final url = Uri.https('fluttershopapp-a7999-default-rtdb.europe-west1.firebasedatabase.app', '/products/$id.json', {'auth': '$authToken'});
     http.patch(
       url,
       body: json.encode(
@@ -157,7 +157,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProducts(String id) async {
-    final url = Uri.https('fluttershopapp-a7999-default-rtdb.europe-west1.firebasedatabase.app', '/products/$id.json');
+    final url = Uri.https('fluttershopapp-a7999-default-rtdb.europe-west1.firebasedatabase.app', '/products/$id.json', {'auth': '$authToken'});
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     //"optimistic update" - usuwamy obiekt z pamięci lokalnej, następnie z firebase -> jeśli usuwanie z firebase się nie uda to dodajemy obiekt do pamięci lokalnej

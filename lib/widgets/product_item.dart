@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/providers/cart.dart';
 
 import '../screens/product_detail_screen.dart';
 import '../providers/product.dart';
@@ -44,7 +43,7 @@ class ProductItem extends StatelessWidget {
               icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
               onPressed: () async {
                 try {
-                  await product.toggleFavoriteStatus(authData.token);
+                  await product.toggleFavoriteStatus(authData.token, authData.userId);
                 } catch (error) {
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
                   scaffold.showSnackBar(
